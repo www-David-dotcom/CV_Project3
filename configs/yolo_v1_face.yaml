@@ -1,0 +1,40 @@
+seed: 42
+device: auto
+
+dataset:
+    name: face
+    num_classes: 1
+    class_names:
+        - face 
+    train_images: data/processed/images/train
+    train_labels: data/processed/labels/train
+    val_images: data/processed/images/val
+    val_labels: data/processed/labels/val
+    
+model:
+    image_size: 448
+    grid_size: 7
+    boxes_per_cell: 2
+    dropout: 0.5
+
+loss:
+    lambda_coord: 5.0
+    lambda_noobj: 0.5
+
+train:
+    epochs: 50
+    batch_size: 8
+    num_workers: 2
+    learning_rate: 0.0001
+    weight_decay: 0.0005
+    output_dir: outputs
+    checkpoint_dir: outputs/checkpoints
+    log_path: outputs/logs/train_history.csv
+
+eval:
+    conf_threshold: 0.2
+    nms_iou_threshold: 0.5
+    map_iou_thresholds:
+        - 0.5
+        - 0.7
+        - 0.9

@@ -1,0 +1,22 @@
+[project]
+name = "yolo-training"
+version = "0.1.0"
+description = "YOLO object detection from scratch for face detection"
+requires-python = ">=3.11"
+dependencies = [
+    "torch",
+    "torchvision",
+    "numpy",
+    "opencv-python",
+    "pillow",
+    "pyyaml",
+    "tqdm",
+    "matplotlib",
+    "scikit-learn",
+]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "ruff",
+]

@@ -1,0 +1,10 @@
+dataset:
+    name: face
+    num_classes: 1
+    class_names:
+        - face
+    train_images: data/processed/images/train
+    train_labels: data/processed/labels/train
+    val_images: data/processed/images/val
+    val_labels: data/processed/labels/val
+    
