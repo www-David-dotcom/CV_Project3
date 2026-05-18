@@ -1,3 +1,6 @@
 ._*
 __pycache__
 .vscode
+data/
+.venv
+.claude
