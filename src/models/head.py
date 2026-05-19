@@ -2,6 +2,7 @@ from __future__ import annotations
 import torch
 from torch import nn
 
+
 class YOLOv1HEAD(nn.Module):
     def __init__(
             self,
@@ -14,20 +15,25 @@ class YOLOv1HEAD(nn.Module):
         self.grid_size = grid_size
         self.boxes_per_cell = boxes_per_cell
         self.num_classes = num_classes
-        output_dim = (grid_size ** 2) * (boxes_per_cell * 5 + num_classes)
+        output_channels = boxes_per_cell * 5 + num_classes
 
-        self.head = nn.Sequential(
-            nn.AdaptiveAvgPool2d((grid_size, grid_size)),
-            nn.Flatten(),
-            nn.Linear(1024 * (grid_size ** 2), 4096),
+        self.conv = nn.Sequential(
+            nn.Conv2d(1024, 512, 3, padding=1, bias=False),
+            nn.BatchNorm2d(512),
             nn.LeakyReLU(0.1, inplace=True),
-            nn.Dropout(dropout),
-            nn.Linear(4096, output_dim),
+            nn.Conv2d(512, 512, 3, stride=2, padding=1, bias=False),
+            nn.BatchNorm2d(512),
+            nn.LeakyReLU(0.1, inplace=True),
+            nn.Conv2d(512, 256, 3, padding=1, bias=False),
+            nn.BatchNorm2d(256),
+            nn.LeakyReLU(0.1, inplace=True),
+            nn.Conv2d(256, 256, 3, padding=1, bias=False),
+            nn.BatchNorm2d(256),
+            nn.LeakyReLU(0.1, inplace=True),
+            nn.Dropout2d(dropout),
+            nn.Conv2d(256, output_channels, 1),
         )
-    
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        batch_size = x.shape[0]
-        output_channels = self.boxes_per_cell * 5 + self.num_classes
-        out = self.head(x)
-        # .view means reshape the torch tensor to the below dimensions
-        return out.view(batch_size, self.grid_size, self.grid_size, output_channels)
+        out = self.conv(x)
+        return out.permute(0, 2, 3, 1)
