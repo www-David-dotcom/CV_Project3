@@ -50,6 +50,9 @@ def main() -> None:
 
         face_count = int(lines[index].strip())
         index += 1
+        if face_count == 0:
+            # WIDERFACE inserts a dummy all-zero bbox line after a 0 face count
+            index += 1
         image_path = images_root / rel_image
         target_image_path = output_images / rel_image
         label_path = output_labels / Path(rel_image).with_suffix(".txt")

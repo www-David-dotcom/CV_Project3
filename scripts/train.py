@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import random
 import sys
 from pathlib import Path
@@ -21,6 +22,7 @@ from utils.config import load_config
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", required=True)
+    parser.add_argument("--gpu", type=int, default=None, help="GPU device id, e.g. --gpu 0")
     return parser.parse_args()
 
 
@@ -39,6 +41,8 @@ def seed_everything(seed: int) -> None:
 
 def main() -> None:
     args = parse_args()
+    if args.gpu is not None:
+        os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu)
     config = load_config(args.config)
     seed_everything(int(config.get("seed", 42)))
     device = resolve_device(config.get("device", "auto"))

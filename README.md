@@ -57,9 +57,13 @@ uv run python scripts/prepare_data.py \
 `configs/yolo_v1_face.yaml` already points to these processed train/val folders. WIDER FACE test images do not include ground-truth labels, so they are mainly used for inference.
 
 ## 3. Train
-
+Test if cuda is available:
 ```bash
-uv run python scripts/train.py --config configs/yolo_v1_face.yaml
+uv run python -c "import torch; print('CUDA available:', torch.cuda.is_available())"
+```
+train:
+```bash
+uv run python scripts/train.py --config configs/yolo_v1_face.yaml --gpu 1
 ```
 
 Outputs:
