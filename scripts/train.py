@@ -86,6 +86,7 @@ def main() -> None:
     )
 
     model = YOLOv1(
+        image_size=model_config["image_size"],
         grid_size=model_config["grid_size"],
         boxes_per_cell=model_config["boxes_per_cell"],
         num_classes=dataset_config["num_classes"],

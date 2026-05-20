@@ -7,7 +7,8 @@ from models.head import YOLOv1HEAD
 class YOLOv1(nn.Module):
     def __init__(
             self,
-            grid_size: int = 7,
+            image_size: int = 448,
+            grid_size: int = 14,
             boxes_per_cell: int = 2,
             num_classes: int = 1,
             dropout: float = 0.5,
@@ -16,7 +17,11 @@ class YOLOv1(nn.Module):
         self.grid_size = grid_size
         self.boxes_per_cell = boxes_per_cell
         self.num_classes = num_classes
-        self.backbone = TinyYOLOBackbone()
+        self.backbone = TinyYOLOBackbone(
+            image_size=image_size,
+            grid_size=grid_size,
+            dropout=dropout,
+        )
         self.head = YOLOv1HEAD(grid_size, boxes_per_cell, num_classes, dropout)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor: return self.head(self.backbone(x))
