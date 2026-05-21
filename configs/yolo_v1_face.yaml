@@ -14,7 +14,7 @@ dataset:
 model:
     image_size: 448
     grid_size: 28
-    boxes_per_cell: 2
+    boxes_per_cell: 5
     dropout: 0.5
 
 loss:
@@ -22,11 +22,11 @@ loss:
     lambda_noobj: 0.5
 
 train:
-    epochs: 1000
+    epochs: 100
     batch_size: 8
     num_workers: 2
     learning_rate: 0.0001
-    weight_decay: 0.0005
+    weight_decay: 0.001
     lr_scheduler:
         type: cosine
         eta_min: 0.00001
@@ -35,7 +35,7 @@ train:
     log_path: outputs/logs/train_history.csv
 
 eval:
-    conf_threshold: 0.001
+    conf_threshold: 0.05
     nms_iou_threshold: 0.5
     map_iou_thresholds:
         - 0.5
